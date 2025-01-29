@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic Tram Station</title>
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #f5c8c8, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #34495e;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo Styling */
+        .logo img {
+            height: 50px;
+            display: block;
+        }
+
+        /* Back Link Styling */
+        .back-link a {
+            font-size: 16px;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            background-color: #1abc9c;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            background-color: #16a085;
+        }
+
+        /* Navigation Bar */
+        .nav {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .nav button {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav button:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Station Structure */
+        .station {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 500px;
+            background: #8B4513;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        
+            /* Önceki küçültme kodları */
+            transform: scale(0.85) translateY(-30px); /* translateY ile yukarı kaydırma */
+            transform-origin: center center; /* Küçültme ve kaydırma merkezlenir */
+        }
+
+        /* Station Roof */
+        .station-roof {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px;
+            background: #4d4d4d;
+            border-bottom: 10px solid #333;
+            clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Roof Supports */
+        .roof-supports {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 60px;
+        }
+
+        .roof-support {
+            background: #4d4d4d;
+            width: 5%;
+            height: 100%;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Doors and Platform */
+        .platform {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 120px;
+            background: #d2b48c;
+            border: 3px solid #a0522d;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+        }
+
+        .station-door {
+            width: 130px;
+            height: 200px;
+            background: #d2b48c;
+            border: 2px solid #a0522d;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .door-light {
+            position: absolute;
+            top: -30px;
+            width: 50px;
+            height: 50px;
+            background-color: gray;
+            border-radius: 50%;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        .door-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Tracks */
+        .tracks {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 60px;
+            background: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .track-line {
+            width: 90%;
+            height: 8px;
+            background: #666;
+            border-radius: 5px;
+        }
+        /* Durak Info Container */
+        .durak-info-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .durak-info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .durak-info-item h4 {
+            margin-bottom: 10px;
+            color: #D2691E;
+            font-size: 16px;
+        }
+
+        .durak-info-item p {
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <!-- Logo -->
+        <div class="logo">
+            <a href="https://www.albayrakmakine.com.tr" class="logolink">
+                <img src="{% static 'core/images/logoalbayrak.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <!-- Geri Dön -->
+        <div class="back-link">
+            <a href="{% url 'home' %}">Geri Dön</a>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <div class="nav">
+        <button data-station="1">Osmangazi</button>
+        <button data-station="2">Porsuk</button>
+        <button data-station="3">Espark</button>
+        <button data-station="4">Anadolu</button>
+    </div>
+
+    <!-- Station -->
+    <div class="station">
+        <!-- Roof -->
+        <div class="station-roof"></div>
+        <div class="roof-supports">
+            <div class="roof-support"></div>
+            <div class="roof-support"></div>
+            <div class="roof-support"></div>
+            <div class="roof-support"></div>
+        </div>
+
+        <!-- Platform -->
+        <div class="platform">
+            <div class="station-door">
+                <div class="door-light" id="light1"></div>
+                <div class="door-label">Kapı 1</div>
+            </div>
+            <div class="station-door">
+                <div class="door-light" id="light2"></div>
+                <div class="door-label">Kapı 2</div>
+            </div>
+            <div class="station-door">
+                <div class="door-light" id="light3"></div>
+                <div class="door-label">Kapı 3</div>
+            </div>
+            <div class="station-door">
+                <div class="door-light" id="light4"></div>
+                <div class="door-label">Kapı 4</div>
+            </div>
+        </div>
+
+        <!-- Tracks -->
+        <div class="tracks">
+            <div class="track-line"></div>
+        </div>
+    </div>
+
+    <!-- Durak Info Container (Yeni Eklenen Kısım) -->
+    <div class="durak-info-container" id="durakInfo">
+        <div class="durak-info-item">
+            <h4>Hat İsmi</h4>
+            <p id="hatIsmi">--</p>
+        </div>
+        <div class="durak-info-item">
+            <h4>Beklenen Giriş Saati</h4>
+            <p id="beklenenGirisSaati">--</p>
+        </div>
+        <div class="durak-info-item">
+            <h4>Tarih</h4>
+            <p id="tarih">--</p>
+        </div>
+    </div>
+
+
+    <script>
+        const navButtons = document.querySelectorAll('.nav button');
+        const doorLights = [
+            document.getElementById('light1'),
+            document.getElementById('light2'),
+            document.getElementById('light3'),
+            document.getElementById('light4')
+        ];
+    
+        const hatIsmiElem = document.getElementById('hatIsmi');
+        const beklenenGirisSaatiElem = document.getElementById('beklenenGirisSaati');
+        const tarihElem = document.getElementById('tarih');
+    
+        function translateColor(isikDurumu) {
+            // Veritabanından gelen renkler Türkçe.
+            // Bu fonksiyon front-end tarafında o renklere uygun İngilizce CSS renklerini döndürecek.
+            switch(isikDurumu) {
+                case 'Yesil':
+                    return 'green';
+                case 'Kirmizi':
+                    return 'red';
+                case 'Sari':
+                    return 'yellow';
+                default:
+                    return 'gray';
+            }
+        }
+    
+        async function updateLights(station) {
+            try {
+                // Bu istek views.py'daki durak fonksiyonuna gidiyor
+                const response = await fetch(`?durak_id=${station}`);
+                if (!response.ok) {
+                    throw new Error("Veri çekilirken bir hata oluştu");
+                }
+                const data = await response.json();
+    
+                // Eğer data boş veya tanımsız ise, varsayılan değerleri ayarlayalım
+                if (!data || data.length === 0) {
+                    doorLights.forEach(light => light.style.backgroundColor = 'gray');
+                    hatIsmiElem.textContent = "--";
+                    beklenenGirisSaatiElem.textContent = "--";
+                    tarihElem.textContent = "--";
+                    return;
+                }
+    
+                // Data içerisinde her kapı için benzer hat bilgileri var.
+                // Hat İsmi, Beklenen Giriş Saati, Tarih bilgilerini ilk elemandan alabiliriz.
+                const firstItem = data[0];
+                hatIsmiElem.textContent = firstItem.Hat_Ismi || "--";
+                beklenenGirisSaatiElem.textContent = firstItem.Beklenen_Giris_Saati || "--";
+                tarihElem.textContent = firstItem.Tarih || "--";
+    
+                // Şimdi kapı ışıklarını güncelleyelim
+                // Kapıları Kapi_ID'nin son hanesine göre sıralıyoruz
+                const kapilar = data.map(item => {
+                    const kapiIdString = item.Kapi_ID.toString();
+                    const doorNumber = parseInt(kapiIdString[kapiIdString.length - 1]);
+                    return {
+                        doorIndex: doorNumber,
+                        color: translateColor(item.Isik_Durumu)
+                    };
+                });
+    
+                // Kapıları doorIndex'e göre sırala
+                kapilar.sort((a, b) => a.doorIndex - b.doorIndex);
+    
+                // doorLights dizisindeki her bir kapı ışığını güncelle
+                doorLights.forEach((light, index) => {
+                    const kapInfo = kapilar.find(k => k.doorIndex === (index + 1));
+                    if (kapInfo) {
+                        light.style.backgroundColor = kapInfo.color;
+                    } else {
+                        light.style.backgroundColor = 'gray';
+                    }
+                });
+    
+            } catch (error) {
+                console.error("Hata:", error);
+                // Hata durumunda yine varsayılan değerleri gösterelim
+                doorLights.forEach(light => light.style.backgroundColor = 'gray');
+                hatIsmiElem.textContent = "--";
+                beklenenGirisSaatiElem.textContent = "--";
+                tarihElem.textContent = "--";
+            }
+        }
+    
+        // Navigation butonları tıklandığında ilgili durağı güncelle
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const station = button.getAttribute('data-station');
+                updateLights(station);
+            });
+        });
+    
+        // Sayfa ilk yüklendiğinde Osmangazi (id=1) durağını güncelle
+        updateLights(1);
+    </script>
+</body>
+</html>

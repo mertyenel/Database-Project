@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şikayet Gönder</title>
+    <style>
+        /* Genel Stil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e6f0ff; /* Mavimsi arka plan */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .sikayet-container {
+            background-color: #ffffff;
+            padding: 50px 40px; /* Daha fazla iç boşluk */
+            border-radius: 15px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Daha belirgin gölge */
+            width: 100%;
+            max-width: 600px; /* Container genişliği artırıldı */
+        }
+
+        .sikayet-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #004080; /* Mavi tonunda başlık */
+            font-size: 26px; /* Başlık font büyüklüğü artırıldı */
+        }
+
+        /* Mesajlar */
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .messages .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Şikayet Formu */
+        .sikayet-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sikayet-form label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #003366;
+            font-size: 16px; /* Label font büyüklüğü artırıldı */
+        }
+
+        .sikayet-form textarea {
+            resize: vertical;
+            min-height: 150px; /* Textarea yüksekliği artırıldı */
+            padding: 14px; /* Daha fazla iç boşluk */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 25px; /* Alanlar arası boşluk artırıldı */
+            font-size: 16px;
+            font-family: 'Arial', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .sikayet-form textarea:focus {
+            border-color: #004080;
+            outline: none;
+        }
+
+        .sikayet-form button {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #0066cc; /* Mavi buton */
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sikayet-form button:hover {
+            background-color: #004080; /* Hover durumunda daha koyu mavi */
+        }
+
+        /* Geri Gel Butonu */
+        .back-button {
+            margin-top: 25px; /* Daha fazla boşluk */
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button a button {
+            padding: 14px 25px; /* Buton boyutu artırıldı */
+            border: none;
+            border-radius: 8px;
+            background-color: #cc0000; /* Kırmızı buton */
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .back-button a button:hover {
+            background-color: #990000; /* Hover durumunda daha koyu kırmızı */
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 600px) {
+            .sikayet-container {
+                padding: 30px 20px;
+            }
+
+            .sikayet-container h2 {
+                font-size: 22px;
+            }
+
+            .sikayet-form textarea {
+                min-height: 120px;
+            }
+
+            .sikayet-form button {
+                font-size: 16px;
+            }
+
+            .back-button a button {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sikayet-container">
+        <h2>Şikayet Gönder</h2>
+        
+        <!-- Hata Mesajları -->
+        {% if errors %}
+            <div class="messages">
+                <div class="error">
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Başarı Mesajı -->
+        {% if success %}
+            <div class="messages">
+                <div class="success">
+                    <p>{{ success }}</p>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Şikayet Formu -->
+        <form class="sikayet-form" method="POST" action="{% url 'sikayet' %}">
+            {% csrf_token %}
+            <label for="yorum">Şikayetiniz:</label>
+            <textarea id="yorum" name="yorum" placeholder="Şikayetinizi buraya yazın..." required>{{ yorum|default:'' }}</textarea>
+            
+            <button type="submit">Gönder</button>
+        </form>
+        
+        <!-- Geri Gel Butonu -->
+        <div class="back-button">
+            <a href="{% url 'home' %}">
+                <button>Geri Gel</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .profile-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .profile-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-form label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .profile-form input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-form button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .profile-form button:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+        .back-button a {
+            text-decoration: none;
+        }
+        .back-button button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #6c757d;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .back-button button:hover {
+            background-color: #5a6268;
+        }
+        .errors, .success {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .errors {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .errors p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Profil</h2>
+
+        <!-- Başarı Mesajı -->
+        {% if success_message %}
+        <div class="success">
+            <p>{{ success_message }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Hata Mesajları -->
+        {% if errors %}
+        <div class="errors">
+            {% for error in errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Profil Güncelleme Formu -->
+        <form class="profile-form" id="profileForm" method="POST" action="{% url 'profil' %}">
+            {% csrf_token %}
+            <label for="first_name">Ad</label>
+            <input type="text" id="first_name" name="first_name" value="{{ first_name }}" required>
+            
+            <label for="last_name">Soyad</label>
+            <input type="text" id="last_name" name="last_name" value="{{ last_name }}" required>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ email }}" required>
+            
+            <label for="phone">Telefon</label>
+            <input type="text" id="phone" name="phone" value="{{ phone }}" required>
+
+            <label for="password">Şifre (Değiştirmek istemiyorsanız boş bırakın)</label>
+            <input type="password" id="password" name="password">
+
+            <!-- Güncelle Butonu -->
+            <button type="submit">Güncelle</button>
+        </form>
+
+        <!-- Geri Gel Butonu -->
+        <div class="back-button">
+            <a href="{% url 'home' %}">
+                <button>Geri Gel</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

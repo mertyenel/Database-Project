@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tramvay Yönetim Sistemi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    {% load static %}
+    <style>
+        /* Genel Stil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar */
+        nav {
+            width: 100%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo img {
+            max-width: 150px;
+        }
+
+        .navbuttons a {
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .navbuttons a:hover {
+            color: #007bff;
+        }
+
+        .container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        
+        .link {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-decoration: none;
+            width: 50%; /* Görseller genişliğin yarısını kaplasın */
+            height: 500px; /* Dikey boyutu büyüttük */
+        }
+        
+        .container img {
+            width: 100%; /* Kutunun genişliğini tamamen doldur */
+            height: 100%; /* Kutunun yüksekliğini tamamen doldur */
+            object-fit: cover; /* Görselin bozulmasını engelle ve kutuyu kapla */
+            border-radius: 0; /* Kenarları düzleştir */
+            transition: 0.5s ease; /* Hover efekti için yumuşak geçiş */
+        }
+        
+        .middle {
+            position: absolute;
+            opacity: 0;
+            transition: 0.5s ease;
+            background-color: rgba(236, 30, 36, 0.8);
+            color: white;
+            font-size: 18px;
+            padding: 16px 32px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .link:hover img {
+            opacity: 0.3;
+        }
+        
+        .link:hover .middle {
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #ddd;
+        }
+
+        footer .typography {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <a href="https://www.albayrakmakine.com.tr">
+                <img src="{% static 'core/images/logoalbayrak.png' %}" alt="Logo">
+            </a>
+        </div>
+        <div class="navbuttons">
+            <a href="{% url 'profil' %}">Profil</a>
+            <a href="{% url 'sikayet' %}">Şikayet</a>
+            <a href="{% url 'giris' %}">Çıkış</a>
+        </div>
+    </nav>
+
+    <!-- Ana İçerik -->
+    <div class="container">
+        <a href="{% url 'tramvay' %}" class="link">
+            <img src="{% static 'core/images/bg1.jpg' %}" alt="Tramvay">
+            <div class="middle">Tramvay Vagon Yoğunluklarını Görüntüle</div>
+        </a>
+        <a href="{% url 'durak' %}" class="link">
+            <img src="{% static 'core/images/gallery01_img-06.jpg' %}" alt="Durak">
+            <div class="middle">Durak Kapılarındaki Işık Durumunu Görüntüle</div>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="typography">
+            &copy; 2024 Albayrak Makine
+        </div>
+    </footer>
+</body>
+</html>
